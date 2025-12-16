@@ -1,0 +1,2777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GridIron AI - Fantasy Football Reimagined</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Default Dark Theme - GridIron Green */
+        :root {
+            --bg-primary: #0a0f0a;
+            --bg-secondary: #121a12;
+            --bg-tertiary: #1a261a;
+            --bg-card: #162016;
+            --text-primary: #ffffff;
+            --text-secondary: #b8c5b8;
+            --text-muted: #6b7c6b;
+            --accent: #22c55e;
+            --accent-hover: #16a34a;
+            --accent-glow: rgba(34, 197, 94, 0.3);
+            --accent-secondary: #fbbf24;
+            --border: #2a3d2a;
+            --border-hover: #3d5a3d;
+            --header-bg: rgba(10, 15, 10, 0.9);
+        }
+
+        /* Light Mode */
+        .light-mode {
+            --bg-primary: #f8faf8;
+            --bg-secondary: #eef2ee;
+            --bg-tertiary: #e2e8e2;
+            --bg-card: #ffffff;
+            --text-primary: #1a1a1a;
+            --text-secondary: #4a5a4a;
+            --text-muted: #6b7c6b;
+            --border: #c5d5c5;
+            --border-hover: #a5b5a5;
+            --header-bg: rgba(248, 250, 248, 0.9);
+        }
+
+        /* ============================================
+           NFL TEAM THEMES - AFC EAST
+           ============================================ */
+
+        /* Buffalo Bills - BOLD Blue & Red */
+        .theme-bills {
+            --bg-primary: #00338D;
+            --bg-secondary: #002670;
+            --bg-tertiary: #C60C30;
+            --bg-card: #003da8;
+            --text-primary: #ffffff;
+            --text-secondary: #C60C30;
+            --text-muted: #ff4466;
+            --accent: #C60C30;
+            --accent-hover: #a00a28;
+            --accent-glow: rgba(198, 12, 48, 0.4);
+            --accent-secondary: #ffffff;
+            --border: #C60C30;
+            --border-hover: #ff4466;
+            --header-bg: rgba(0, 51, 141, 0.95);
+        }
+
+        /* Miami Dolphins - Aqua & Orange */
+        .theme-dolphins {
+            --bg-primary: #008E97;
+            --bg-secondary: #007078;
+            --bg-tertiary: #FC4C02;
+            --bg-card: #00a5af;
+            --text-primary: #ffffff;
+            --text-secondary: #FC4C02;
+            --text-muted: #ff7744;
+            --accent: #FC4C02;
+            --accent-hover: #dd4000;
+            --accent-glow: rgba(252, 76, 2, 0.4);
+            --accent-secondary: #ffffff;
+            --border: #FC4C02;
+            --border-hover: #ff7744;
+            --header-bg: rgba(0, 142, 151, 0.95);
+        }
+
+        /* New England Patriots - Navy, Red & Silver */
+        .theme-patriots {
+            --bg-primary: #002244;
+            --bg-secondary: #001a33;
+            --bg-tertiary: #C60C30;
+            --bg-card: #002d5c;
+            --text-primary: #ffffff;
+            --text-secondary: #C60C30;
+            --text-muted: #B0B7BC;
+            --accent: #C60C30;
+            --accent-hover: #a00a28;
+            --accent-glow: rgba(198, 12, 48, 0.4);
+            --accent-secondary: #B0B7BC;
+            --border: #C60C30;
+            --border-hover: #B0B7BC;
+            --header-bg: rgba(0, 34, 68, 0.95);
+        }
+
+        /* New York Jets - BOLD Green */
+        .theme-jets {
+            --bg-primary: #125740;
+            --bg-secondary: #0e4532;
+            --bg-tertiary: #000000;
+            --bg-card: #167350;
+            --text-primary: #ffffff;
+            --text-secondary: #ffffff;
+            --text-muted: #88ccaa;
+            --accent: #ffffff;
+            --accent-hover: #cccccc;
+            --accent-glow: rgba(255, 255, 255, 0.3);
+            --accent-secondary: #000000;
+            --border: #ffffff;
+            --border-hover: #88ccaa;
+            --header-bg: rgba(18, 87, 64, 0.95);
+        }
+
+        /* ============================================
+           NFL TEAM THEMES - AFC NORTH
+           ============================================ */
+
+        /* Baltimore Ravens - Purple & Gold */
+        .theme-ravens {
+            --bg-primary: #241773;
+            --bg-secondary: #1a1058;
+            --bg-tertiary: #000000;
+            --bg-card: #2d1c8c;
+            --text-primary: #ffffff;
+            --text-secondary: #9E7C0C;
+            --text-muted: #c9a82c;
+            --accent: #9E7C0C;
+            --accent-hover: #b89010;
+            --accent-glow: rgba(158, 124, 12, 0.4);
+            --accent-secondary: #ffffff;
+            --border: #9E7C0C;
+            --border-hover: #c9a82c;
+            --header-bg: rgba(36, 23, 115, 0.95);
+        }
+
+        /* Cincinnati Bengals - Orange & Black STRIPES */
+        .theme-bengals {
+            --bg-primary: #000000;
+            --bg-secondary: #1a1a1a;
+            --bg-tertiary: #FB4F14;
+            --bg-card: #262626;
+            --text-primary: #FB4F14;
+            --text-secondary: #FB4F14;
+            --text-muted: #ff8855;
+            --accent: #FB4F14;
+            --accent-hover: #ff6633;
+            --accent-glow: rgba(251, 79, 20, 0.5);
+            --accent-secondary: #ffffff;
+            --border: #FB4F14;
+            --border-hover: #ff8855;
+            --header-bg: rgba(0, 0, 0, 0.95);
+        }
+
+        /* Cleveland Browns - Orange & Brown */
+        .theme-browns {
+            --bg-primary: #311D00;
+            --bg-secondary: #221400;
+            --bg-tertiary: #FF3C00;
+            --bg-card: #402600;
+            --text-primary: #FF3C00;
+            --text-secondary: #FF3C00;
+            --text-muted: #ff7744;
+            --accent: #FF3C00;
+            --accent-hover: #ff5522;
+            --accent-glow: rgba(255, 60, 0, 0.4);
+            --accent-secondary: #ffffff;
+            --border: #FF3C00;
+            --border-hover: #ff7744;
+            --header-bg: rgba(49, 29, 0, 0.95);
+        }
+
+        /* Pittsburgh Steelers - Black & Gold */
+        .theme-steelers {
+            --bg-primary: #000000;
+            --bg-secondary: #1a1a1a;
+            --bg-tertiary: #262626;
+            --bg-card: #1a1a1a;
+            --text-primary: #FFB612;
+            --text-secondary: #FFB612;
+            --text-muted: #ccaa44;
+            --accent: #FFB612;
+            --accent-hover: #ffc733;
+            --accent-glow: rgba(255, 182, 18, 0.4);
+            --accent-secondary: #ffffff;
+            --border: #FFB612;
+            --border-hover: #ffc733;
+            --header-bg: rgba(0, 0, 0, 0.95);
+        }
+
+        /* ============================================
+           NFL TEAM THEMES - AFC SOUTH
+           ============================================ */
+
+        /* Houston Texans - Deep Steel Blue & Red */
+        .theme-texans {
+            --bg-primary: #03202F;
+            --bg-secondary: #021822;
+            --bg-tertiary: #A71930;
+            --bg-card: #042940;
+            --text-primary: #ffffff;
+            --text-secondary: #A71930;
+            --text-muted: #dd4455;
+            --accent: #A71930;
+            --accent-hover: #c92040;
+            --accent-glow: rgba(167, 25, 48, 0.4);
+            --accent-secondary: #ffffff;
+            --border: #A71930;
+            --border-hover: #dd4455;
+            --header-bg: rgba(3, 32, 47, 0.95);
+        }
+
+        /* Indianapolis Colts - Royal Blue & White */
+        .theme-colts {
+            --bg-primary: #002C5F;
+            --bg-secondary: #001f42;
+            --bg-tertiary: #ffffff;
+            --bg-card: #003878;
+            --text-primary: #ffffff;
+            --text-secondary: #ffffff;
+            --text-muted: #aaccff;
+            --accent: #ffffff;
+            --accent-hover: #dddddd;
+            --accent-glow: rgba(255, 255, 255, 0.3);
+            --accent-secondary: #A2AAAD;
+            --border: #ffffff;
+            --border-hover: #aaccff;
+            --header-bg: rgba(0, 44, 95, 0.95);
+        }
+
+        /* Jacksonville Jaguars - Teal & Gold */
+        .theme-jaguars {
+            --bg-primary: #006778;
+            --bg-secondary: #004d5a;
+            --bg-tertiary: #000000;
+            --bg-card: #007d92;
+            --text-primary: #ffffff;
+            --text-secondary: #D7A22A;
+            --text-muted: #e8c060;
+            --accent: #D7A22A;
+            --accent-hover: #e8b840;
+            --accent-glow: rgba(215, 162, 42, 0.4);
+            --accent-secondary: #ffffff;
+            --border: #D7A22A;
+            --border-hover: #e8c060;
+            --header-bg: rgba(0, 103, 120, 0.95);
+        }
+
+        /* Tennessee Titans - Navy, Light Blue & Red */
+        .theme-titans {
+            --bg-primary: #0C2340;
+            --bg-secondary: #081830;
+            --bg-tertiary: #4B92DB;
+            --bg-card: #102d52;
+            --text-primary: #ffffff;
+            --text-secondary: #4B92DB;
+            --text-muted: #8ab8e8;
+            --accent: #4B92DB;
+            --accent-hover: #6aa8e8;
+            --accent-glow: rgba(75, 146, 219, 0.4);
+            --accent-secondary: #C8102E;
+            --border: #4B92DB;
+            --border-hover: #8ab8e8;
+            --header-bg: rgba(12, 35, 64, 0.95);
+        }
+
+        /* ============================================
+           NFL TEAM THEMES - AFC WEST
+           ============================================ */
+
+        /* Denver Broncos - Orange & Navy */
+        .theme-broncos {
+            --bg-primary: #FB4F14;
+            --bg-secondary: #e04510;
+            --bg-tertiary: #002244;
+            --bg-card: #ff6633;
+            --text-primary: #ffffff;
+            --text-secondary: #002244;
+            --text-muted: #ffffff;
+            --accent: #002244;
+            --accent-hover: #003366;
+            --accent-glow: rgba(0, 34, 68, 0.4);
+            --accent-secondary: #ffffff;
+            --border: #002244;
+            --border-hover: #ffffff;
+            --header-bg: rgba(251, 79, 20, 0.95);
+        }
+
+        /* Kansas City Chiefs - RED & Gold */
+        .theme-chiefs {
+            --bg-primary: #E31837;
+            --bg-secondary: #c91430;
+            --bg-tertiary: #FFB81C;
+            --bg-card: #ff2244;
+            --text-primary: #ffffff;
+            --text-secondary: #FFB81C;
+            --text-muted: #ffcc55;
+            --accent: #FFB81C;
+            --accent-hover: #ffcc44;
+            --accent-glow: rgba(255, 184, 28, 0.4);
+            --accent-secondary: #ffffff;
+            --border: #FFB81C;
+            --border-hover: #ffcc55;
+            --header-bg: rgba(227, 24, 55, 0.95);
+        }
+
+        /* Las Vegas Raiders - Silver & Black */
+        .theme-raiders {
+            --bg-primary: #000000;
+            --bg-secondary: #1a1a1a;
+            --bg-tertiary: #A5ACAF;
+            --bg-card: #262626;
+            --text-primary: #A5ACAF;
+            --text-secondary: #A5ACAF;
+            --text-muted: #888888;
+            --accent: #A5ACAF;
+            --accent-hover: #c0c5c8;
+            --accent-glow: rgba(165, 172, 175, 0.3);
+            --accent-secondary: #ffffff;
+            --border: #A5ACAF;
+            --border-hover: #c0c5c8;
+            --header-bg: rgba(0, 0, 0, 0.95);
+        }
+
+        /* Los Angeles Chargers - Powder Blue & Gold */
+        .theme-chargers {
+            --bg-primary: #0080C6;
+            --bg-secondary: #0066a0;
+            --bg-tertiary: #FFC20E;
+            --bg-card: #0099e6;
+            --text-primary: #ffffff;
+            --text-secondary: #FFC20E;
+            --text-muted: #ffdd66;
+            --accent: #FFC20E;
+            --accent-hover: #ffd040;
+            --accent-glow: rgba(255, 194, 14, 0.4);
+            --accent-secondary: #ffffff;
+            --border: #FFC20E;
+            --border-hover: #ffdd66;
+            --header-bg: rgba(0, 128, 198, 0.95);
+        }
+
+        /* ============================================
+           NFL TEAM THEMES - NFC EAST
+           ============================================ */
+
+        /* Dallas Cowboys - Navy, Silver & White */
+        .theme-cowboys {
+            --bg-primary: #041E42;
+            --bg-secondary: #021530;
+            --bg-tertiary: #869397;
+            --bg-card: #052854;
+            --text-primary: #ffffff;
+            --text-secondary: #869397;
+            --text-muted: #a8b0b4;
+            --accent: #869397;
+            --accent-hover: #a8b0b4;
+            --accent-glow: rgba(134, 147, 151, 0.3);
+            --accent-secondary: #ffffff;
+            --border: #869397;
+            --border-hover: #a8b0b4;
+            --header-bg: rgba(4, 30, 66, 0.95);
+        }
+
+        /* New York Giants - Blue & Red */
+        .theme-giants {
+            --bg-primary: #0B2265;
+            --bg-secondary: #081850;
+            --bg-tertiary: #A71930;
+            --bg-card: #0e2a7d;
+            --text-primary: #ffffff;
+            --text-secondary: #A71930;
+            --text-muted: #dd4455;
+            --accent: #A71930;
+            --accent-hover: #c92040;
+            --accent-glow: rgba(167, 25, 48, 0.4);
+            --accent-secondary: #ffffff;
+            --border: #A71930;
+            --border-hover: #dd4455;
+            --header-bg: rgba(11, 34, 101, 0.95);
+        }
+
+        /* Philadelphia Eagles - Midnight Green & Silver */
+        .theme-eagles {
+            --bg-primary: #004C54;
+            --bg-secondary: #003940;
+            --bg-tertiary: #A5ACAF;
+            --bg-card: #006068;
+            --text-primary: #ffffff;
+            --text-secondary: #A5ACAF;
+            --text-muted: #c0c8ca;
+            --accent: #A5ACAF;
+            --accent-hover: #c0c8ca;
+            --accent-glow: rgba(165, 172, 175, 0.3);
+            --accent-secondary: #ffffff;
+            --border: #A5ACAF;
+            --border-hover: #c0c8ca;
+            --header-bg: rgba(0, 76, 84, 0.95);
+        }
+
+        /* Washington Commanders - Burgundy & Gold */
+        .theme-commanders {
+            --bg-primary: #5A1414;
+            --bg-secondary: #440f0f;
+            --bg-tertiary: #FFB612;
+            --bg-card: #701a1a;
+            --text-primary: #ffffff;
+            --text-secondary: #FFB612;
+            --text-muted: #ffc944;
+            --accent: #FFB612;
+            --accent-hover: #ffc944;
+            --accent-glow: rgba(255, 182, 18, 0.4);
+            --accent-secondary: #ffffff;
+            --border: #FFB612;
+            --border-hover: #ffc944;
+            --header-bg: rgba(90, 20, 20, 0.95);
+        }
+
+        /* ============================================
+           NFL TEAM THEMES - NFC NORTH
+           ============================================ */
+
+        /* Chicago Bears - Navy & Orange */
+        .theme-bears {
+            --bg-primary: #0B162A;
+            --bg-secondary: #060d18;
+            --bg-tertiary: #C83803;
+            --bg-card: #0f1e38;
+            --text-primary: #ffffff;
+            --text-secondary: #C83803;
+            --text-muted: #ff6633;
+            --accent: #C83803;
+            --accent-hover: #e84810;
+            --accent-glow: rgba(200, 56, 3, 0.4);
+            --accent-secondary: #ffffff;
+            --border: #C83803;
+            --border-hover: #ff6633;
+            --header-bg: rgba(11, 22, 42, 0.95);
+        }
+
+        /* Detroit Lions - Honolulu Blue & Silver */
+        .theme-lions {
+            --bg-primary: #0076B6;
+            --bg-secondary: #005c90;
+            --bg-tertiary: #B0B7BC;
+            --bg-card: #0088d0;
+            --text-primary: #ffffff;
+            --text-secondary: #B0B7BC;
+            --text-muted: #d0d5d8;
+            --accent: #B0B7BC;
+            --accent-hover: #d0d5d8;
+            --accent-glow: rgba(176, 183, 188, 0.3);
+            --accent-secondary: #ffffff;
+            --border: #B0B7BC;
+            --border-hover: #d0d5d8;
+            --header-bg: rgba(0, 118, 182, 0.95);
+        }
+
+        /* Green Bay Packers - Green & Gold */
+        .theme-packers {
+            --bg-primary: #203731;
+            --bg-secondary: #152520;
+            --bg-tertiary: #FFB612;
+            --bg-card: #294840;
+            --text-primary: #ffffff;
+            --text-secondary: #FFB612;
+            --text-muted: #ffc944;
+            --accent: #FFB612;
+            --accent-hover: #ffc944;
+            --accent-glow: rgba(255, 182, 18, 0.4);
+            --accent-secondary: #ffffff;
+            --border: #FFB612;
+            --border-hover: #ffc944;
+            --header-bg: rgba(32, 55, 49, 0.95);
+        }
+
+        /* Minnesota Vikings - Purple & Gold */
+        .theme-vikings {
+            --bg-primary: #4F2683;
+            --bg-secondary: #3d1d66;
+            --bg-tertiary: #FFC62F;
+            --bg-card: #602f9c;
+            --text-primary: #ffffff;
+            --text-secondary: #FFC62F;
+            --text-muted: #ffd966;
+            --accent: #FFC62F;
+            --accent-hover: #ffd966;
+            --accent-glow: rgba(255, 198, 47, 0.4);
+            --accent-secondary: #ffffff;
+            --border: #FFC62F;
+            --border-hover: #ffd966;
+            --header-bg: rgba(79, 38, 131, 0.95);
+        }
+
+        /* ============================================
+           NFL TEAM THEMES - NFC SOUTH
+           ============================================ */
+
+        /* Atlanta Falcons - Red & Black */
+        .theme-falcons {
+            --bg-primary: #A71930;
+            --bg-secondary: #8a1528;
+            --bg-tertiary: #000000;
+            --bg-card: #c92040;
+            --text-primary: #ffffff;
+            --text-secondary: #000000;
+            --text-muted: #A8A9AD;
+            --accent: #000000;
+            --accent-hover: #333333;
+            --accent-glow: rgba(0, 0, 0, 0.4);
+            --accent-secondary: #A8A9AD;
+            --border: #000000;
+            --border-hover: #A8A9AD;
+            --header-bg: rgba(167, 25, 48, 0.95);
+        }
+
+        /* Carolina Panthers - Black & Electric Blue */
+        .theme-panthers {
+            --bg-primary: #0085CA;
+            --bg-secondary: #006aa3;
+            --bg-tertiary: #000000;
+            --bg-card: #009fe6;
+            --text-primary: #ffffff;
+            --text-secondary: #000000;
+            --text-muted: #BFC0BF;
+            --accent: #000000;
+            --accent-hover: #333333;
+            --accent-glow: rgba(0, 0, 0, 0.4);
+            --accent-secondary: #BFC0BF;
+            --border: #000000;
+            --border-hover: #BFC0BF;
+            --header-bg: rgba(0, 133, 202, 0.95);
+        }
+
+        /* New Orleans Saints - Black & Gold */
+        .theme-saints {
+            --bg-primary: #000000;
+            --bg-secondary: #1a1a1a;
+            --bg-tertiary: #D3BC8D;
+            --bg-card: #262626;
+            --text-primary: #D3BC8D;
+            --text-secondary: #D3BC8D;
+            --text-muted: #c4a86e;
+            --accent: #D3BC8D;
+            --accent-hover: #e0cca0;
+            --accent-glow: rgba(211, 188, 141, 0.4);
+            --accent-secondary: #ffffff;
+            --border: #D3BC8D;
+            --border-hover: #e0cca0;
+            --header-bg: rgba(0, 0, 0, 0.95);
+        }
+
+        /* Tampa Bay Buccaneers - Red, Pewter & Orange */
+        .theme-buccaneers {
+            --bg-primary: #D50A0A;
+            --bg-secondary: #b00808;
+            --bg-tertiary: #34302B;
+            --bg-card: #ee1111;
+            --text-primary: #ffffff;
+            --text-secondary: #FF7900;
+            --text-muted: #B1BABF;
+            --accent: #FF7900;
+            --accent-hover: #ff9933;
+            --accent-glow: rgba(255, 121, 0, 0.4);
+            --accent-secondary: #34302B;
+            --border: #FF7900;
+            --border-hover: #B1BABF;
+            --header-bg: rgba(213, 10, 10, 0.95);
+        }
+
+        /* ============================================
+           NFL TEAM THEMES - NFC WEST
+           ============================================ */
+
+        /* Arizona Cardinals - Cardinal Red & White */
+        .theme-cardinals {
+            --bg-primary: #97233F;
+            --bg-secondary: #7a1c32;
+            --bg-tertiary: #000000;
+            --bg-card: #b02a4c;
+            --text-primary: #ffffff;
+            --text-secondary: #ffffff;
+            --text-muted: #FFB612;
+            --accent: #ffffff;
+            --accent-hover: #dddddd;
+            --accent-glow: rgba(255, 255, 255, 0.3);
+            --accent-secondary: #FFB612;
+            --border: #ffffff;
+            --border-hover: #FFB612;
+            --header-bg: rgba(151, 35, 63, 0.95);
+        }
+
+        /* Los Angeles Rams - Royal Blue & Yellow */
+        .theme-rams {
+            --bg-primary: #003594;
+            --bg-secondary: #002870;
+            --bg-tertiary: #FFA300;
+            --bg-card: #0044b8;
+            --text-primary: #ffffff;
+            --text-secondary: #FFA300;
+            --text-muted: #ffbb44;
+            --accent: #FFA300;
+            --accent-hover: #ffbb44;
+            --accent-glow: rgba(255, 163, 0, 0.4);
+            --accent-secondary: #ffffff;
+            --border: #FFA300;
+            --border-hover: #ffbb44;
+            --header-bg: rgba(0, 53, 148, 0.95);
+        }
+
+        /* San Francisco 49ers - RED & Gold */
+        .theme-49ers {
+            --bg-primary: #AA0000;
+            --bg-secondary: #880000;
+            --bg-tertiary: #B3995D;
+            --bg-card: #cc0000;
+            --text-primary: #ffffff;
+            --text-secondary: #B3995D;
+            --text-muted: #d4b87a;
+            --accent: #B3995D;
+            --accent-hover: #d4b87a;
+            --accent-glow: rgba(179, 153, 93, 0.4);
+            --accent-secondary: #ffffff;
+            --border: #B3995D;
+            --border-hover: #d4b87a;
+            --header-bg: rgba(170, 0, 0, 0.95);
+        }
+
+        /* Seattle Seahawks - Action Green & Navy */
+        .theme-seahawks {
+            --bg-primary: #002244;
+            --bg-secondary: #001830;
+            --bg-tertiary: #69BE28;
+            --bg-card: #002d5c;
+            --text-primary: #ffffff;
+            --text-secondary: #69BE28;
+            --text-muted: #A5ACAF;
+            --accent: #69BE28;
+            --accent-hover: #7fd040;
+            --accent-glow: rgba(105, 190, 40, 0.4);
+            --accent-secondary: #A5ACAF;
+            --border: #69BE28;
+            --border-hover: #A5ACAF;
+            --header-bg: rgba(0, 34, 68, 0.95);
+        }
+
+        /* ============================================
+           SPECIAL THEME - Brady Blue
+           ============================================ */
+        .theme-brady {
+            --bg-primary: #0a1628;
+            --bg-secondary: #0d1e38;
+            --bg-tertiary: #1a3050;
+            --bg-card: #142440;
+            --text-primary: #ffffff;
+            --text-secondary: #C41E3A;
+            --text-muted: #8899aa;
+            --accent: #C41E3A;
+            --accent-hover: #e02244;
+            --accent-glow: rgba(196, 30, 58, 0.4);
+            --accent-secondary: #B0B7BC;
+            --border: #2a4060;
+            --border-hover: #3a5070;
+            --header-bg: rgba(10, 22, 40, 0.95);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: var(--header-bg);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            transition: background 0.3s, border-color 0.3s;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .logo span {
+            color: var(--accent);
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        nav a:hover {
+            color: var(--text-primary);
+        }
+
+        /* Nav Dropdown */
+        .nav-dropdown {
+            position: relative;
+        }
+
+        .nav-dropdown-trigger {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            background: none;
+            border: none;
+            font-family: inherit;
+        }
+
+        .nav-dropdown-trigger:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-dropdown-trigger::after {
+            content: '▾';
+            font-size: 0.7rem;
+            transition: transform 0.2s;
+        }
+
+        .nav-dropdown:hover .nav-dropdown-trigger::after {
+            transform: rotate(180deg);
+        }
+
+        .nav-dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 0.5rem;
+            min-width: 200px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s;
+            margin-top: 0.5rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            z-index: 200;
+        }
+
+        .nav-dropdown:hover .nav-dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .nav-dropdown-menu a {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .nav-dropdown-menu a:hover {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        .nav-dropdown-menu a .dropdown-icon {
+            font-size: 1.1rem;
+        }
+
+        .nav-dropdown-menu a .dropdown-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .nav-dropdown-menu a .dropdown-label {
+            font-weight: 500;
+        }
+
+        .nav-dropdown-menu a .dropdown-desc {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        /* Theme Controls */
+        .theme-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-right: 1rem;
+        }
+
+        .mode-toggle {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            transition: all 0.2s;
+        }
+
+        .mode-toggle:hover {
+            background: var(--bg-card);
+            border-color: var(--border-hover);
+        }
+
+        .theme-select {
+            padding: 0.5rem 0.75rem;
+            border-radius: 8px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            font-size: 0.85rem;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s;
+            min-width: 140px;
+        }
+
+        .theme-select:hover {
+            border-color: var(--border-hover);
+        }
+
+        .theme-select:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .theme-select option {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+
+        .theme-select optgroup {
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .btn {
+            padding: 0.625rem 1.25rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            text-decoration: none;
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-ghost:hover {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border-color: var(--border-hover);
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: #000;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            box-shadow: 0 0 30px var(--accent-glow);
+        }
+
+        .btn-large {
+            padding: 1rem 2rem;
+            font-size: 1rem;
+        }
+
+        /* Mobile menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 8rem 2rem 6rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            padding: 0.5rem 1rem;
+            border-radius: 100px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .hero-badge span {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .hero h1 .highlight {
+            color: var(--accent);
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 2.5rem;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+            margin-top: 4rem;
+            padding-top: 4rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .hero-stat {
+            text-align: center;
+        }
+
+        .hero-stat-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--accent);
+        }
+
+        .hero-stat-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 6rem 2rem;
+            background: var(--bg-secondary);
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto 4rem;
+        }
+
+        .section-tag {
+            color: var(--accent);
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .section-header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* AI Section */
+        .ai-section {
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .ai-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .ai-content h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .ai-content h2 span {
+            color: var(--accent);
+        }
+
+        .ai-content > p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        .ai-features {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .ai-feature {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .ai-feature-icon {
+            width: 24px;
+            height: 24px;
+            background: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 0.125rem;
+        }
+
+        .ai-feature-icon svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .ai-feature-text h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .ai-feature-text p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .ai-demo {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ai-demo::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-secondary), var(--accent));
+        }
+
+        .ai-demo-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .ai-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .ai-demo-title {
+            font-weight: 600;
+        }
+
+        .ai-demo-subtitle {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .ai-chat {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .chat-message {
+            padding: 1rem;
+            border-radius: 12px;
+            font-size: 0.95rem;
+        }
+
+        .chat-user {
+            background: var(--bg-tertiary);
+            margin-left: 2rem;
+        }
+
+        .chat-ai {
+            background: linear-gradient(135deg, rgba(var(--accent), 0.1), rgba(var(--accent), 0.05));
+            border: 1px solid var(--border);
+            margin-right: 2rem;
+        }
+
+        .chat-ai strong {
+            color: var(--accent);
+        }
+
+        /* League Types */
+        .league-types {
+            padding: 6rem 2rem;
+            background: var(--bg-secondary);
+        }
+
+        .league-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .league-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .league-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 0 40px var(--accent-glow);
+        }
+
+        .league-card h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .league-card .league-type {
+            color: var(--accent);
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .league-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .league-card ul {
+            list-style: none;
+            text-align: left;
+            margin-bottom: 1.5rem;
+        }
+
+        .league-card li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .league-card li:last-child {
+            border-bottom: none;
+        }
+
+        .league-card li::before {
+            content: '✓';
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 6rem 2rem;
+            text-align: center;
+            background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+        }
+
+        .cta-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .cta-content h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .cta-content p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Footer */
+        footer {
+            padding: 4rem 2rem 2rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 4rem;
+        }
+
+        .footer-brand p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 1rem;
+            max-width: 300px;
+        }
+
+        .footer-links h4 {
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 4rem auto 0;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Login Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 420px;
+            transform: translateY(20px);
+            transition: transform 0.3s;
+        }
+
+        .modal-overlay.active .modal {
+            transform: translateY(0);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .modal-close:hover {
+            color: var(--text-primary);
+        }
+
+        .modal h2 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .modal > p {
+            color: var(--text-secondary);
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .form-options label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+
+        .form-options a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .form-options a:hover {
+            text-decoration: underline;
+        }
+
+        .btn-full {
+            width: 100%;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 1.5rem 0;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .social-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn-social {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-social:hover {
+            background: var(--bg-card);
+            border-color: var(--border-hover);
+            color: var(--text-primary);
+        }
+
+        .modal-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .modal-footer a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .modal-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Browse Leagues Modal */
+        .browse-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        .browse-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .browse-modal-content {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            width: 100%;
+            max-width: 1100px;
+            margin-top: 4rem;
+            transform: translateY(20px);
+            transition: transform 0.3s;
+        }
+
+        .browse-modal.active .browse-modal-content {
+            transform: translateY(0);
+        }
+
+        .browse-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .browse-modal-header h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .browse-modal-close {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .browse-modal-close:hover {
+            background: var(--bg-card);
+            color: var(--text-primary);
+        }
+
+        .browse-modal-filters {
+            display: flex;
+            gap: 1rem;
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--border);
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .filter-group label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+        }
+
+        .filter-group select,
+        .filter-group input {
+            padding: 0.625rem 1rem;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            font-family: inherit;
+            min-width: 140px;
+        }
+
+        .filter-group select:focus,
+        .filter-group input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .browse-modal-body {
+            padding: 0;
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+
+        /* Modern Data Table */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table thead {
+            position: sticky;
+            top: 0;
+            background: var(--bg-tertiary);
+            z-index: 10;
+        }
+
+        .data-table th {
+            padding: 1rem 1.25rem;
+            text-align: left;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .data-table td {
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.9rem;
+        }
+
+        .data-table tbody tr {
+            transition: background 0.2s;
+        }
+
+        .data-table tbody tr:hover {
+            background: var(--bg-tertiary);
+        }
+
+        .data-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .league-name-cell {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .league-name {
+            font-weight: 600;
+            color: var(--accent);
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .league-name:hover {
+            color: var(--accent-hover);
+            text-decoration: underline;
+        }
+
+        .league-id {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .openings-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.375rem 0.75rem;
+            background: var(--bg-tertiary);
+            border-radius: 100px;
+            font-size: 0.85rem;
+        }
+
+        .openings-badge.available {
+            background: rgba(34, 197, 94, 0.15);
+            color: #22c55e;
+        }
+
+        .openings-badge.full {
+            background: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+        }
+
+        .openings-badge.almost {
+            background: rgba(251, 191, 36, 0.15);
+            color: #fbbf24;
+        }
+
+        .format-badge {
+            display: inline-block;
+            padding: 0.375rem 0.75rem;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .draft-time {
+            display: flex;
+            flex-direction: column;
+            gap: 0.125rem;
+        }
+
+        .draft-date {
+            font-weight: 500;
+        }
+
+        .draft-day {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .join-btn {
+            padding: 0.5rem 1rem;
+            background: var(--accent);
+            color: #000;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .join-btn:hover {
+            background: var(--accent-hover);
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        .join-btn:disabled {
+            background: var(--bg-tertiary);
+            color: var(--text-muted);
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .browse-modal-footer {
+            padding: 1rem 2rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .pagination {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .pagination button {
+            padding: 0.5rem 1rem;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .pagination button:hover {
+            background: var(--bg-card);
+            color: var(--text-primary);
+        }
+
+        .pagination button.active {
+            background: var(--accent);
+            color: #000;
+            border-color: var(--accent);
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .ai-grid {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+                gap: 2rem;
+            }
+
+            .theme-controls {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero {
+                padding: 7rem 1.5rem 4rem;
+            }
+
+            .hero-stats {
+                flex-direction: column;
+                gap: 2rem;
+            }
+
+            .features, .ai-section, .league-types, .cta-section {
+                padding: 4rem 1.5rem;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .modal {
+                margin: 1rem;
+                padding: 2rem;
+            }
+
+            .nav-buttons .btn {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <a href="#" class="logo">
+                <div class="logo-icon">🏈</div>
+                GridIron<span>AI</span>
+            </a>
+            <nav>
+                <a href="#features">Features</a>
+                <a href="#ai">AI Tools</a>
+                <div class="nav-dropdown">
+                    <button class="nav-dropdown-trigger">Leagues</button>
+                    <div class="nav-dropdown-menu">
+                        <a href="#" onclick="openBrowseLeagues(); return false;">
+                            <span class="dropdown-icon">🔍</span>
+                            <span class="dropdown-text">
+                                <span class="dropdown-label">Browse & Join</span>
+                                <span class="dropdown-desc">Find open leagues to join</span>
+                            </span>
+                        </a>
+                        <a href="#">
+                            <span class="dropdown-icon">➕</span>
+                            <span class="dropdown-text">
+                                <span class="dropdown-label">Create League</span>
+                                <span class="dropdown-desc">Start your own league</span>
+                            </span>
+                        </a>
+                        <a href="#">
+                            <span class="dropdown-icon">🎯</span>
+                            <span class="dropdown-text">
+                                <span class="dropdown-label">Mock Drafts</span>
+                                <span class="dropdown-desc">Practice before the real thing</span>
+                            </span>
+                        </a>
+                        <a href="#">
+                            <span class="dropdown-icon">📋</span>
+                            <span class="dropdown-text">
+                                <span class="dropdown-label">My Leagues</span>
+                                <span class="dropdown-desc">View your active leagues</span>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+                <a href="#pricing">Pricing</a>
+            </nav>
+            <div class="nav-buttons">
+                <div class="theme-controls">
+                    <button class="mode-toggle" id="modeToggle" title="Toggle light/dark mode">🌙</button>
+                    <select class="theme-select" id="themeSelect">
+                        <option value="default">GridIron Green</option>
+                        <optgroup label="AFC East">
+                            <option value="bills">Buffalo Bills</option>
+                            <option value="dolphins">Miami Dolphins</option>
+                            <option value="patriots">New England Patriots</option>
+                            <option value="jets">New York Jets</option>
+                        </optgroup>
+                        <optgroup label="AFC North">
+                            <option value="ravens">Baltimore Ravens</option>
+                            <option value="bengals">Cincinnati Bengals</option>
+                            <option value="browns">Cleveland Browns</option>
+                            <option value="steelers">Pittsburgh Steelers</option>
+                        </optgroup>
+                        <optgroup label="AFC South">
+                            <option value="texans">Houston Texans</option>
+                            <option value="colts">Indianapolis Colts</option>
+                            <option value="jaguars">Jacksonville Jaguars</option>
+                            <option value="titans">Tennessee Titans</option>
+                        </optgroup>
+                        <optgroup label="AFC West">
+                            <option value="broncos">Denver Broncos</option>
+                            <option value="chiefs">Kansas City Chiefs</option>
+                            <option value="raiders">Las Vegas Raiders</option>
+                            <option value="chargers">Los Angeles Chargers</option>
+                        </optgroup>
+                        <optgroup label="NFC East">
+                            <option value="cowboys">Dallas Cowboys</option>
+                            <option value="giants">New York Giants</option>
+                            <option value="eagles">Philadelphia Eagles</option>
+                            <option value="commanders">Washington Commanders</option>
+                        </optgroup>
+                        <optgroup label="NFC North">
+                            <option value="bears">Chicago Bears</option>
+                            <option value="lions">Detroit Lions</option>
+                            <option value="packers">Green Bay Packers</option>
+                            <option value="vikings">Minnesota Vikings</option>
+                        </optgroup>
+                        <optgroup label="NFC South">
+                            <option value="falcons">Atlanta Falcons</option>
+                            <option value="panthers">Carolina Panthers</option>
+                            <option value="saints">New Orleans Saints</option>
+                            <option value="buccaneers">Tampa Bay Buccaneers</option>
+                        </optgroup>
+                        <optgroup label="NFC West">
+                            <option value="cardinals">Arizona Cardinals</option>
+                            <option value="rams">Los Angeles Rams</option>
+                            <option value="49ers">San Francisco 49ers</option>
+                            <option value="seahawks">Seattle Seahawks</option>
+                        </optgroup>
+                        <optgroup label="Special">
+                            <option value="brady">Brady Blue</option>
+                        </optgroup>
+                    </select>
+                </div>
+                <button class="btn btn-ghost" onclick="openModal('login')">Log In</button>
+                <button class="btn btn-primary" onclick="openModal('signup')">Get Started</button>
+            </div>
+            <button class="mobile-menu-btn">☰</button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-badge">
+            <span>NEW</span> AI-Powered Lineup Recommendations
+        </div>
+        <h1>Fantasy Football<br><span class="highlight">Reimagined</span></h1>
+        <p>Dominate your league with AI-powered insights, real-time analysis, and the most intuitive fantasy experience ever built.</p>
+        <div class="hero-buttons">
+            <button class="btn btn-primary btn-large" onclick="openModal('signup')">Start Free Today</button>
+            <button class="btn btn-ghost btn-large">Watch Demo</button>
+        </div>
+        <div class="hero-stats">
+            <div class="hero-stat">
+                <div class="hero-stat-value">50K+</div>
+                <div class="hero-stat-label">Active Players</div>
+            </div>
+            <div class="hero-stat">
+                <div class="hero-stat-value">12K</div>
+                <div class="hero-stat-label">Leagues Created</div>
+            </div>
+            <div class="hero-stat">
+                <div class="hero-stat-value">94%</div>
+                <div class="hero-stat-label">Win Rate Improvement</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="section-header">
+            <div class="section-tag">Features</div>
+            <h2>Everything You Need to Win</h2>
+            <p>All the tools serious fantasy players need, wrapped in a modern experience.</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3>Live Drafts</h3>
+                <p>Snake and auction drafts with real-time updates, auto-pick, and draft grades.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>Live Scoring</h3>
+                <p>Watch your points roll in with real-time scoring and play-by-play updates.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔄</div>
+                <h3>Smart Waivers</h3>
+                <p>Fair blind bidding system with AI recommendations for waiver pickups.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📱</div>
+                <h3>Mobile First</h3>
+                <p>Manage your team anywhere with our fully responsive design.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🏆</div>
+                <h3>Playoff Brackets</h3>
+                <p>Customizable playoff formats with bracket visualization and seeding.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">💬</div>
+                <h3>League Chat</h3>
+                <p>Built-in messaging, trade discussions, and trash talk all in one place.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Section -->
+    <section class="ai-section" id="ai">
+        <div class="ai-grid">
+            <div class="ai-content">
+                <h2>Your Personal <span>AI Analyst</span></h2>
+                <p>Get the same insights the pros use. Our AI analyzes matchups, trends, and data to give you an unfair advantage.</p>
+                <div class="ai-features">
+                    <div class="ai-feature">
+                        <div class="ai-feature-icon">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                        <div class="ai-feature-text">
+                            <h4>Start/Sit Recommendations</h4>
+                            <p>AI-powered suggestions with confidence scores and reasoning.</p>
+                        </div>
+                    </div>
+                    <div class="ai-feature">
+                        <div class="ai-feature-icon">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                        <div class="ai-feature-text">
+                            <h4>Trade Analyzer</h4>
+                            <p>Instant trade value analysis with win probability impact.</p>
+                        </div>
+                    </div>
+                    <div class="ai-feature">
+                        <div class="ai-feature-icon">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                        <div class="ai-feature-text">
+                            <h4>Injury Impact Reports</h4>
+                            <p>Know exactly how injuries affect your lineup decisions.</p>
+                        </div>
+                    </div>
+                    <div class="ai-feature">
+                        <div class="ai-feature-icon">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                        <div class="ai-feature-text">
+                            <h4>Waiver Wire Gems</h4>
+                            <p>Discover breakout players before they blow up.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ai-demo">
+                <div class="ai-demo-header">
+                    <div class="ai-avatar">🤖</div>
+                    <div>
+                        <div class="ai-demo-title">GridIron AI Assistant</div>
+                        <div class="ai-demo-subtitle">Always analyzing</div>
+                    </div>
+                </div>
+                <div class="ai-chat">
+                    <div class="chat-message chat-user">
+                        Should I start Lamar Jackson or Josh Allen this week?
+                    </div>
+                    <div class="chat-message chat-ai">
+                        <strong>Start Josh Allen</strong> (87% confidence)<br><br>
+                        Allen faces a weak secondary allowing 24.3 PPG to QBs. Jackson's matchup vs. Pittsburgh's #3 pass D is concerning. Allen also has a higher rushing floor this week.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- League Types -->
+    <section class="league-types" id="leagues">
+        <div class="section-header">
+            <div class="section-tag">League Types</div>
+            <h2>Play Your Way</h2>
+            <p>From casual to competitive, we have a format for every player.</p>
+        </div>
+        <div class="league-grid">
+            <div class="league-card">
+                <h3>Season Long</h3>
+                <div class="league-type">CLASSIC</div>
+                <p>Traditional fantasy football from draft day to championship.</p>
+                <ul>
+                    <li>Snake or Auction Draft</li>
+                    <li>Weekly Waivers</li>
+                    <li>Playoff Brackets</li>
+                    <li>10, 12, or 14 Teams</li>
+                </ul>
+                <button class="btn btn-ghost btn-full">Create League</button>
+            </div>
+            <div class="league-card">
+                <h3>Best Ball</h3>
+                <div class="league-type">SET & FORGET</div>
+                <p>Draft once, your best lineup is auto-optimized each week.</p>
+                <ul>
+                    <li>No Lineup Management</li>
+                    <li>Larger Rosters</li>
+                    <li>Perfect for Busy Players</li>
+                    <li>Multiple Entries Welcome</li>
+                </ul>
+                <button class="btn btn-ghost btn-full">Create League</button>
+            </div>
+            <div class="league-card">
+                <h3>Weekly</h3>
+                <div class="league-type">QUICK PLAY</div>
+                <p>Fresh start every week. Pick players, compete, win prizes.</p>
+                <ul>
+                    <li>New Slate Each Week</li>
+                    <li>Salary Cap Format</li>
+                    <li>Instant Results</li>
+                    <li>Cash Prizes Available</li>
+                </ul>
+                <button class="btn btn-ghost btn-full">Create League</button>
+            </div>
+            <div class="league-card">
+                <h3>Playoff Challenge</h3>
+                <div class="league-type">POSTSEASON</div>
+                <p>Pick your squad for the NFL playoffs and ride to the Super Bowl.</p>
+                <ul>
+                    <li>Playoff Teams Only</li>
+                    <li>Survivor Elements</li>
+                    <li>Bonus for Longevity</li>
+                    <li>Big Prize Pools</li>
+                </ul>
+                <button class="btn btn-ghost btn-full">Create League</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="cta-content">
+            <h2>Ready to Dominate?</h2>
+            <p>Join thousands of players already using AI to crush their leagues.</p>
+            <button class="btn btn-primary btn-large" onclick="openModal('signup')">Create Free Account</button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-brand">
+                <a href="#" class="logo">
+                    <div class="logo-icon">🏈</div>
+                    GridIron<span>AI</span>
+                </a>
+                <p>The smartest way to play fantasy football. AI-powered insights meet beautiful design.</p>
+            </div>
+            <div class="footer-links">
+                <h4>Product</h4>
+                <ul>
+                    <li><a href="#">Features</a></li>
+                    <li><a href="#">Pricing</a></li>
+                    <li><a href="#">AI Tools</a></li>
+                    <li><a href="#">Mobile App</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Leagues</h4>
+                <ul>
+                    <li><a href="#">Public Leagues</a></li>
+                    <li><a href="#">Private Leagues</a></li>
+                    <li><a href="#">Mock Drafts</a></li>
+                    <li><a href="#">Contests</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Rules</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Blog</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>&copy; 2024 GridIron AI. All rights reserved.</span>
+            <span>Terms · Privacy · Cookies</span>
+        </div>
+    </footer>
+
+    <!-- Login/Signup Modal -->
+    <div class="modal-overlay" id="authModal">
+        <div class="modal">
+            <h2 id="modalTitle">Welcome Back</h2>
+            <p id="modalSubtitle">Log in to access your leagues</p>
+
+            <form id="authForm">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" placeholder="you@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="••••••••" required>
+                </div>
+                <div class="form-options">
+                    <label>
+                        <input type="checkbox"> Remember me
+                    </label>
+                    <a href="#">Forgot password?</a>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full btn-large" id="submitBtn">Log In</button>
+            </form>
+
+            <div class="divider">or continue with</div>
+
+            <div class="social-buttons">
+                <button class="btn-social">
+                    <svg width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+                    Google
+                </button>
+                <button class="btn-social">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                    X
+                </button>
+            </div>
+
+            <div class="modal-footer" id="modalFooter">
+                Don't have an account? <a href="#" onclick="switchModal('signup')">Sign up</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Browse Leagues Modal -->
+    <div class="browse-modal" id="browseModal">
+        <div class="browse-modal-content">
+            <div class="browse-modal-header">
+                <h2>🔍 Browse Open Leagues</h2>
+                <button class="browse-modal-close" onclick="closeBrowseLeagues()">✕</button>
+            </div>
+            <div class="browse-modal-filters">
+                <div class="filter-group">
+                    <label>League Type</label>
+                    <select>
+                        <option>All Types</option>
+                        <option>Season Long</option>
+                        <option>Best Ball</option>
+                        <option>Weekly</option>
+                        <option>Playoff Challenge</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Draft Format</label>
+                    <select>
+                        <option>All Formats</option>
+                        <option>Snake</option>
+                        <option>Auction</option>
+                        <option>Slow Draft</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Team Size</label>
+                    <select>
+                        <option>Any Size</option>
+                        <option>10 Teams</option>
+                        <option>12 Teams</option>
+                        <option>14 Teams</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Scoring</label>
+                    <select>
+                        <option>All Scoring</option>
+                        <option>PPR</option>
+                        <option>Half PPR</option>
+                        <option>Standard</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Search</label>
+                    <input type="text" placeholder="Search leagues...">
+                </div>
+            </div>
+            <div class="browse-modal-body">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>League</th>
+                            <th>Openings</th>
+                            <th>Format</th>
+                            <th>Scoring</th>
+                            <th>Draft Date</th>
+                            <th>Time</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="league-name-cell">
+                                    <span class="league-name">Sunday Showdown #4521</span>
+                                    <span class="league-id">12-Team Season Long</span>
+                                </div>
+                            </td>
+                            <td><span class="openings-badge available">4 / 12</span></td>
+                            <td><span class="format-badge">Snake</span></td>
+                            <td>PPR</td>
+                            <td>
+                                <div class="draft-time">
+                                    <span class="draft-date">Dec 20</span>
+                                    <span class="draft-day">Friday</span>
+                                </div>
+                            </td>
+                            <td>8:00 PM</td>
+                            <td><button class="join-btn">Join</button></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="league-name-cell">
+                                    <span class="league-name">Gridiron Glory #4520</span>
+                                    <span class="league-id">10-Team Best Ball</span>
+                                </div>
+                            </td>
+                            <td><span class="openings-badge available">6 / 10</span></td>
+                            <td><span class="format-badge">Snake</span></td>
+                            <td>Half PPR</td>
+                            <td>
+                                <div class="draft-time">
+                                    <span class="draft-date">Dec 20</span>
+                                    <span class="draft-day">Friday</span>
+                                </div>
+                            </td>
+                            <td>9:30 PM</td>
+                            <td><button class="join-btn">Join</button></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="league-name-cell">
+                                    <span class="league-name">Championship Chase #4519</span>
+                                    <span class="league-id">12-Team Season Long</span>
+                                </div>
+                            </td>
+                            <td><span class="openings-badge almost">2 / 12</span></td>
+                            <td><span class="format-badge">Auction</span></td>
+                            <td>PPR</td>
+                            <td>
+                                <div class="draft-time">
+                                    <span class="draft-date">Dec 19</span>
+                                    <span class="draft-day">Thursday</span>
+                                </div>
+                            </td>
+                            <td>10:00 PM</td>
+                            <td><button class="join-btn">Join</button></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="league-name-cell">
+                                    <span class="league-name">Prime Time League #4518</span>
+                                    <span class="league-id">14-Team Season Long</span>
+                                </div>
+                            </td>
+                            <td><span class="openings-badge available">7 / 14</span></td>
+                            <td><span class="format-badge">Snake</span></td>
+                            <td>Standard</td>
+                            <td>
+                                <div class="draft-time">
+                                    <span class="draft-date">Dec 19</span>
+                                    <span class="draft-day">Thursday</span>
+                                </div>
+                            </td>
+                            <td>9:15 PM</td>
+                            <td><button class="join-btn">Join</button></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="league-name-cell">
+                                    <span class="league-name">Elite Managers #4517</span>
+                                    <span class="league-id">12-Team Season Long</span>
+                                </div>
+                            </td>
+                            <td><span class="openings-badge full">0 / 12</span></td>
+                            <td><span class="format-badge">Snake</span></td>
+                            <td>PPR</td>
+                            <td>
+                                <div class="draft-time">
+                                    <span class="draft-date">Dec 18</span>
+                                    <span class="draft-day">Wednesday</span>
+                                </div>
+                            </td>
+                            <td>8:30 PM</td>
+                            <td><button class="join-btn" disabled>Full</button></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="league-name-cell">
+                                    <span class="league-name">Fantasy Fanatics #4516</span>
+                                    <span class="league-id">10-Team Best Ball</span>
+                                </div>
+                            </td>
+                            <td><span class="openings-badge available">5 / 10</span></td>
+                            <td><span class="format-badge">Snake</span></td>
+                            <td>PPR</td>
+                            <td>
+                                <div class="draft-time">
+                                    <span class="draft-date">Dec 18</span>
+                                    <span class="draft-day">Wednesday</span>
+                                </div>
+                            </td>
+                            <td>10:15 PM</td>
+                            <td><button class="join-btn">Join</button></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="league-name-cell">
+                                    <span class="league-name">Touchdown Kings #4515</span>
+                                    <span class="league-id">12-Team Season Long</span>
+                                </div>
+                            </td>
+                            <td><span class="openings-badge almost">1 / 12</span></td>
+                            <td><span class="format-badge">Auction</span></td>
+                            <td>Half PPR</td>
+                            <td>
+                                <div class="draft-time">
+                                    <span class="draft-date">Dec 17</span>
+                                    <span class="draft-day">Tuesday</span>
+                                </div>
+                            </td>
+                            <td>9:00 PM</td>
+                            <td><button class="join-btn">Join</button></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="league-name-cell">
+                                    <span class="league-name">Draft Day Warriors #4514</span>
+                                    <span class="league-id">10-Team Weekly</span>
+                                </div>
+                            </td>
+                            <td><span class="openings-badge available">3 / 10</span></td>
+                            <td><span class="format-badge">Snake</span></td>
+                            <td>PPR</td>
+                            <td>
+                                <div class="draft-time">
+                                    <span class="draft-date">Dec 17</span>
+                                    <span class="draft-day">Tuesday</span>
+                                </div>
+                            </td>
+                            <td>8:00 PM</td>
+                            <td><button class="join-btn">Join</button></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="league-name-cell">
+                                    <span class="league-name">Redzone Rivals #4513</span>
+                                    <span class="league-id">12-Team Season Long</span>
+                                </div>
+                            </td>
+                            <td><span class="openings-badge available">8 / 12</span></td>
+                            <td><span class="format-badge">Snake</span></td>
+                            <td>Standard</td>
+                            <td>
+                                <div class="draft-time">
+                                    <span class="draft-date">Dec 16</span>
+                                    <span class="draft-day">Monday</span>
+                                </div>
+                            </td>
+                            <td>10:00 PM</td>
+                            <td><button class="join-btn">Join</button></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="league-name-cell">
+                                    <span class="league-name">Victory Formation #4512</span>
+                                    <span class="league-id">14-Team Season Long</span>
+                                </div>
+                            </td>
+                            <td><span class="openings-badge available">9 / 14</span></td>
+                            <td><span class="format-badge">Auction</span></td>
+                            <td>PPR</td>
+                            <td>
+                                <div class="draft-time">
+                                    <span class="draft-date">Dec 16</span>
+                                    <span class="draft-day">Monday</span>
+                                </div>
+                            </td>
+                            <td>9:15 PM</td>
+                            <td><button class="join-btn">Join</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="browse-modal-footer">
+                <span>Showing 1-10 of 156 leagues</span>
+                <div class="pagination">
+                    <button class="active">1</button>
+                    <button>2</button>
+                    <button>3</button>
+                    <button>...</button>
+                    <button>16</button>
+                    <button>→</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Theme Management
+        const themeSelect = document.getElementById('themeSelect');
+        const modeToggle = document.getElementById('modeToggle');
+        let isLightMode = false;
+
+        // Load saved preferences
+        const savedTheme = localStorage.getItem('gridironTheme') || 'default';
+        const savedMode = localStorage.getItem('gridironMode') || 'dark';
+
+        themeSelect.value = savedTheme;
+        if (savedTheme !== 'default') {
+            document.body.className = `theme-${savedTheme}`;
+        }
+
+        if (savedMode === 'light') {
+            isLightMode = true;
+            document.body.classList.add('light-mode');
+            modeToggle.textContent = '☀️';
+        }
+
+        // Theme change handler
+        themeSelect.addEventListener('change', function() {
+            const theme = this.value;
+
+            // Remove all theme classes
+            document.body.className = '';
+
+            // Add new theme if not default
+            if (theme !== 'default') {
+                document.body.classList.add(`theme-${theme}`);
+            }
+
+            // Re-apply light mode if active
+            if (isLightMode) {
+                document.body.classList.add('light-mode');
+            }
+
+            localStorage.setItem('gridironTheme', theme);
+        });
+
+        // Light/Dark mode toggle
+        modeToggle.addEventListener('click', function() {
+            isLightMode = !isLightMode;
+
+            if (isLightMode) {
+                document.body.classList.add('light-mode');
+                modeToggle.textContent = '☀️';
+                localStorage.setItem('gridironMode', 'light');
+            } else {
+                document.body.classList.remove('light-mode');
+                modeToggle.textContent = '🌙';
+                localStorage.setItem('gridironMode', 'dark');
+            }
+        });
+
+        // Modal functionality
+        function openModal(type) {
+            const modal = document.getElementById('authModal');
+            const title = document.getElementById('modalTitle');
+            const subtitle = document.getElementById('modalSubtitle');
+            const submitBtn = document.getElementById('submitBtn');
+            const footer = document.getElementById('modalFooter');
+
+            if (type === 'login') {
+                title.textContent = 'Welcome Back';
+                subtitle.textContent = 'Log in to access your leagues';
+                submitBtn.textContent = 'Log In';
+                footer.innerHTML = 'Don\'t have an account? <a href="#" onclick="switchModal(\'signup\'); return false;">Sign up</a>';
+            } else {
+                title.textContent = 'Create Account';
+                subtitle.textContent = 'Start dominating your leagues today';
+                submitBtn.textContent = 'Create Account';
+                footer.innerHTML = 'Already have an account? <a href="#" onclick="switchModal(\'login\'); return false;">Log in</a>';
+            }
+
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('authModal').classList.remove('active');
+        }
+
+        function switchModal(type) {
+            openModal(type);
+        }
+
+        // Close modal on overlay click
+        document.getElementById('authModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // Form submission (placeholder)
+        document.getElementById('authForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Authentication would happen here!');
+        });
+
+        // Smooth scroll for nav links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (href !== '#') {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }
+            });
+        });
+
+        // Browse Leagues Modal
+        function openBrowseLeagues() {
+            document.getElementById('browseModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeBrowseLeagues() {
+            document.getElementById('browseModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Close browse modal on overlay click
+        document.getElementById('browseModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeBrowseLeagues();
+            }
+        });
+
+        // Close browse modal on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeBrowseLeagues();
+            }
+        });
+    </script>
+</body>
+</html>
