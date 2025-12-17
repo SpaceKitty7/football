@@ -697,15 +697,18 @@
         }
 
         .header-content {
-            max-width: 1200px;
-            margin: 0 auto;
+            width: 100%;
             padding: 1rem 2rem;
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: space-between;
+            position: relative;
         }
 
         .logo {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
             display: flex;
             align-items: center;
             gap: 0.75rem;
@@ -733,7 +736,9 @@
         nav {
             display: flex;
             align-items: center;
-            gap: 2rem;
+            flex: 1;
+            justify-content: space-between;
+            padding-right: 9rem;
         }
 
         nav a {
@@ -841,16 +846,19 @@
 
         .nav-buttons {
             display: flex;
-            gap: 0.75rem;
             align-items: center;
+            flex: 1;
+            justify-content: space-between;
+            padding-left: 9rem;
         }
 
         /* Theme Controls */
         .theme-controls {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-right: 1rem;
+            display: contents;
+        }
+
+        #authButtons {
+            display: contents;
         }
 
         .mode-toggle {
@@ -1134,7 +1142,28 @@
         .ai-content > p {
             color: var(--text-secondary);
             font-size: 1.1rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .ai-customize-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: linear-gradient(135deg, rgba(var(--accent), 0.1), var(--bg-tertiary));
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 0.875rem 1.25rem;
             margin-bottom: 2rem;
+        }
+
+        .customize-icon {
+            font-size: 1.25rem;
+        }
+
+        .customize-text {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-weight: 500;
         }
 
         .ai-features {
@@ -1198,31 +1227,54 @@
 
         .ai-demo-header {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 0.75rem;
-            margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
+            gap: 0.5rem;
+            margin-bottom: 1.25rem;
+            padding-bottom: 1.25rem;
             border-bottom: 1px solid var(--border);
+            text-align: center;
         }
 
         .ai-avatar {
-            width: 40px;
-            height: 40px;
+            width: 48px;
+            height: 48px;
             background: linear-gradient(135deg, var(--accent), var(--accent-hover));
-            border-radius: 10px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.25rem;
+            font-size: 1.5rem;
         }
 
         .ai-demo-title {
             font-weight: 600;
+            font-size: 1.1rem;
         }
 
         .ai-demo-subtitle {
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             color: var(--text-muted);
+        }
+
+        .ai-settings-bar {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.25rem;
+            justify-content: center;
+        }
+
+        .setting-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.5rem 1rem;
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-primary);
         }
 
         .ai-chat {
@@ -1232,20 +1284,20 @@
         }
 
         .chat-message {
-            padding: 1rem;
+            padding: 1rem 1.25rem;
             border-radius: 12px;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
+            line-height: 1.5;
         }
 
         .chat-user {
             background: var(--bg-tertiary);
-            margin-left: 2rem;
+            border: 1px solid var(--border);
         }
 
         .chat-ai {
-            background: linear-gradient(135deg, rgba(var(--accent), 0.1), rgba(var(--accent), 0.05));
-            border: 1px solid var(--border);
-            margin-right: 2rem;
+            background: var(--bg-primary);
+            border: 1px solid var(--accent);
         }
 
         .chat-ai strong {
@@ -1895,6 +1947,159 @@
             border-color: var(--accent);
         }
 
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            top: 5rem;
+            right: 1.5rem;
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .toast {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            animation: slideIn 0.3s ease;
+            min-width: 280px;
+        }
+
+        .toast.success {
+            border-color: #22c55e;
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), var(--bg-secondary));
+        }
+
+        .toast.error {
+            border-color: #ef4444;
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), var(--bg-secondary));
+        }
+
+        .toast-icon {
+            font-size: 1.25rem;
+        }
+
+        .toast-message {
+            flex: 1;
+            font-size: 0.9rem;
+        }
+
+        .toast-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 0.25rem;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* User Menu (when logged in) */
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: #000;
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .user-leagues {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .logout-btn {
+            padding: 0.5rem 1rem;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .logout-btn:hover {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        /* Form Validation */
+        .form-group.error input {
+            border-color: #ef4444;
+        }
+
+        .form-group.success input {
+            border-color: #22c55e;
+        }
+
+        .form-error {
+            color: #ef4444;
+            font-size: 0.8rem;
+            margin-top: 0.375rem;
+            display: none;
+        }
+
+        .form-group.error .form-error {
+            display: block;
+        }
+
+        .password-strength {
+            height: 4px;
+            background: var(--bg-tertiary);
+            border-radius: 2px;
+            margin-top: 0.5rem;
+            overflow: hidden;
+        }
+
+        .password-strength-bar {
+            height: 100%;
+            width: 0;
+            border-radius: 2px;
+            transition: all 0.3s;
+        }
+
+        .password-strength-bar.weak { width: 33%; background: #ef4444; }
+        .password-strength-bar.medium { width: 66%; background: #fbbf24; }
+        .password-strength-bar.strong { width: 100%; background: #22c55e; }
+
         /* Responsive */
         @media (max-width: 968px) {
             .ai-grid {
@@ -1960,10 +2165,6 @@
     <!-- Header -->
     <header>
         <div class="header-content">
-            <a href="#" class="logo">
-                <div class="logo-icon">🏈</div>
-                GridIron<span>AI</span>
-            </a>
             <nav>
                 <a href="#features">Features</a>
                 <a href="#ai">AI Tools</a>
@@ -2002,6 +2203,10 @@
                 </div>
                 <a href="#pricing">Pricing</a>
             </nav>
+            <a href="#" class="logo">
+                <div class="logo-icon">🏈</div>
+                GridIron<span>AI</span>
+            </a>
             <div class="nav-buttons">
                 <div class="theme-controls">
                     <button class="mode-toggle" id="modeToggle" title="Toggle light/dark mode">🌙</button>
@@ -2060,10 +2265,19 @@
                         </optgroup>
                     </select>
                 </div>
-                <button class="btn btn-ghost" onclick="openModal('login')">Log In</button>
-                <button class="btn btn-primary" onclick="openModal('signup')">Get Started</button>
+                <div id="authButtons">
+                    <button class="btn btn-ghost" onclick="openModal('login')">Log In</button>
+                    <button class="btn btn-primary" onclick="openModal('signup')">Get Started</button>
+                </div>
+                <div id="userMenu" class="user-menu" style="display: none;">
+                    <div class="user-avatar" id="userAvatar">U</div>
+                    <div class="user-info">
+                        <span class="user-name" id="userName">User</span>
+                        <span class="user-leagues" id="userLeagueCount">0 leagues</span>
+                    </div>
+                    <button class="logout-btn" onclick="logout()">Log Out</button>
+                </div>
             </div>
-            <button class="mobile-menu-btn">☰</button>
         </div>
     </header>
 
@@ -2098,8 +2312,8 @@
     <section class="features" id="features">
         <div class="section-header">
             <div class="section-tag">Features</div>
-            <h2>Everything You Need to Win</h2>
-            <p>All the tools serious fantasy players need, wrapped in a modern experience.</p>
+            <h2>Your Complete Fantasy Arsenal</h2>
+            <p>Every tool you need, all in one place. No extra apps, no spreadsheets, no hassle.</p>
         </div>
         <div class="features-grid">
             <div class="feature-card">
@@ -2140,7 +2354,11 @@
         <div class="ai-grid">
             <div class="ai-content">
                 <h2>Your Personal <span>AI Analyst</span></h2>
-                <p>Get the same insights the pros use. Our AI analyzes matchups, trends, and data to give you an unfair advantage.</p>
+                <p>Train your own AI assistant to match your playstyle. The better you tune it, the smarter it gets. Your edge is yours alone.</p>
+                <div class="ai-customize-badge">
+                    <span class="customize-icon">⚙️</span>
+                    <span class="customize-text">Fully customizable — tune risk tolerance, roster preferences, and strategy</span>
+                </div>
                 <div class="ai-features">
                     <div class="ai-feature">
                         <div class="ai-feature-icon">
@@ -2184,17 +2402,21 @@
                 <div class="ai-demo-header">
                     <div class="ai-avatar">🤖</div>
                     <div>
-                        <div class="ai-demo-title">GridIron AI Assistant</div>
-                        <div class="ai-demo-subtitle">Always analyzing</div>
+                        <div class="ai-demo-title">Your AI Assistant</div>
+                        <div class="ai-demo-subtitle">Tuned to your playstyle</div>
                     </div>
+                </div>
+                <div class="ai-settings-bar">
+                    <span class="setting-chip">🎯 Risk: High Upside</span>
+                    <span class="setting-chip">📈 Priority: Ceiling</span>
                 </div>
                 <div class="ai-chat">
                     <div class="chat-message chat-user">
                         Should I start Lamar Jackson or Josh Allen this week?
                     </div>
                     <div class="chat-message chat-ai">
-                        <strong>Start Josh Allen</strong> (87% confidence)<br><br>
-                        Allen faces a weak secondary allowing 24.3 PPG to QBs. Jackson's matchup vs. Pittsburgh's #3 pass D is concerning. Allen also has a higher rushing floor this week.
+                        <strong>Based on your high-upside settings: Start Lamar</strong> (78% confidence)<br><br>
+                        Your profile prioritizes ceiling over floor. Lamar's rushing upside gives him a 40+ point ceiling this week. Allen is safer, but you didn't build your AI for safe.
                     </div>
                 </div>
             </div>
@@ -2313,6 +2535,9 @@
         </div>
     </footer>
 
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
     <!-- Login/Signup Modal -->
     <div class="modal-overlay" id="authModal">
         <div class="modal">
@@ -2320,17 +2545,22 @@
             <p id="modalSubtitle">Log in to access your leagues</p>
 
             <form id="authForm">
-                <div class="form-group">
+                <div class="form-group" id="emailGroup">
                     <label for="email">Email</label>
                     <input type="email" id="email" placeholder="you@example.com" required>
+                    <div class="form-error" id="emailError">Please enter a valid email address</div>
                 </div>
-                <div class="form-group">
+                <div class="form-group" id="passwordGroup">
                     <label for="password">Password</label>
                     <input type="password" id="password" placeholder="••••••••" required>
+                    <div class="password-strength" id="passwordStrength" style="display: none;">
+                        <div class="password-strength-bar" id="passwordStrengthBar"></div>
+                    </div>
+                    <div class="form-error" id="passwordError">Password must be at least 8 characters</div>
                 </div>
                 <div class="form-options">
                     <label>
-                        <input type="checkbox"> Remember me
+                        <input type="checkbox" id="rememberMe"> Remember me
                     </label>
                     <a href="#">Forgot password?</a>
                 </div>
@@ -2437,7 +2667,7 @@
                                 </div>
                             </td>
                             <td>8:00 PM</td>
-                            <td><button class="join-btn">Join</button></td>
+                            <td><button class="join-btn" onclick="joinLeague('Sunday Showdown #4521', '4521')">Join</button></td>
                         </tr>
                         <tr>
                             <td>
@@ -2456,7 +2686,7 @@
                                 </div>
                             </td>
                             <td>9:30 PM</td>
-                            <td><button class="join-btn">Join</button></td>
+                            <td><button class="join-btn" onclick="joinLeague('Gridiron Glory #4520', '4520')">Join</button></td>
                         </tr>
                         <tr>
                             <td>
@@ -2475,7 +2705,7 @@
                                 </div>
                             </td>
                             <td>10:00 PM</td>
-                            <td><button class="join-btn">Join</button></td>
+                            <td><button class="join-btn" onclick="joinLeague('Championship Chase #4519', '4519')">Join</button></td>
                         </tr>
                         <tr>
                             <td>
@@ -2494,7 +2724,7 @@
                                 </div>
                             </td>
                             <td>9:15 PM</td>
-                            <td><button class="join-btn">Join</button></td>
+                            <td><button class="join-btn" onclick="joinLeague('Prime Time League #4518', '4518')">Join</button></td>
                         </tr>
                         <tr>
                             <td>
@@ -2532,7 +2762,7 @@
                                 </div>
                             </td>
                             <td>10:15 PM</td>
-                            <td><button class="join-btn">Join</button></td>
+                            <td><button class="join-btn" onclick="joinLeague('Fantasy Fanatics #4516', '4516')">Join</button></td>
                         </tr>
                         <tr>
                             <td>
@@ -2551,7 +2781,7 @@
                                 </div>
                             </td>
                             <td>9:00 PM</td>
-                            <td><button class="join-btn">Join</button></td>
+                            <td><button class="join-btn" onclick="joinLeague('Touchdown Kings #4515', '4515')">Join</button></td>
                         </tr>
                         <tr>
                             <td>
@@ -2570,7 +2800,7 @@
                                 </div>
                             </td>
                             <td>8:00 PM</td>
-                            <td><button class="join-btn">Join</button></td>
+                            <td><button class="join-btn" onclick="joinLeague('Draft Day Warriors #4514', '4514')">Join</button></td>
                         </tr>
                         <tr>
                             <td>
@@ -2589,7 +2819,7 @@
                                 </div>
                             </td>
                             <td>10:00 PM</td>
-                            <td><button class="join-btn">Join</button></td>
+                            <td><button class="join-btn" onclick="joinLeague('Redzone Rivals #4513', '4513')">Join</button></td>
                         </tr>
                         <tr>
                             <td>
@@ -2608,7 +2838,7 @@
                                 </div>
                             </td>
                             <td>9:15 PM</td>
-                            <td><button class="join-btn">Join</button></td>
+                            <td><button class="join-btn" onclick="joinLeague('Victory Formation #4512', '4512')">Join</button></td>
                         </tr>
                     </tbody>
                 </table>
@@ -2628,7 +2858,283 @@
     </div>
 
     <script>
-        // Theme Management
+        // ============================================
+        // SECURITY: Simple hash function for passwords
+        // Note: For production, use bcrypt via a backend API
+        // This provides basic security for demo/development
+        // ============================================
+        async function hashPassword(password) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(password + 'gridironSalt2024!');
+            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        // ============================================
+        // USER DATA MANAGEMENT
+        // ============================================
+        function getUsers() {
+            const users = localStorage.getItem('gridironUsers');
+            return users ? JSON.parse(users) : {};
+        }
+
+        function saveUsers(users) {
+            localStorage.setItem('gridironUsers', JSON.stringify(users));
+        }
+
+        function getCurrentUser() {
+            const session = localStorage.getItem('gridironSession');
+            if (!session) return null;
+            const { email, expires } = JSON.parse(session);
+            if (Date.now() > expires) {
+                localStorage.removeItem('gridironSession');
+                return null;
+            }
+            const users = getUsers();
+            return users[email] || null;
+        }
+
+        function setCurrentUser(email, remember = false) {
+            const expires = remember
+                ? Date.now() + (30 * 24 * 60 * 60 * 1000) // 30 days
+                : Date.now() + (24 * 60 * 60 * 1000); // 1 day
+            localStorage.setItem('gridironSession', JSON.stringify({ email, expires }));
+        }
+
+        // ============================================
+        // TOAST NOTIFICATIONS
+        // ============================================
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `
+                <span class="toast-icon">${type === 'success' ? '✓' : '✕'}</span>
+                <span class="toast-message">${message}</span>
+                <button class="toast-close" onclick="this.parentElement.remove()">✕</button>
+            `;
+            container.appendChild(toast);
+            setTimeout(() => toast.remove(), 5000);
+        }
+
+        // ============================================
+        // UI STATE MANAGEMENT
+        // ============================================
+        let currentAuthMode = 'login';
+
+        function updateUIForUser() {
+            const user = getCurrentUser();
+            const authButtons = document.getElementById('authButtons');
+            const userMenu = document.getElementById('userMenu');
+
+            if (user) {
+                authButtons.style.display = 'none';
+                userMenu.style.display = 'flex';
+                document.getElementById('userAvatar').textContent = user.email[0].toUpperCase();
+                document.getElementById('userName').textContent = user.email.split('@')[0];
+                const leagueCount = user.leagues ? user.leagues.length : 0;
+                document.getElementById('userLeagueCount').textContent =
+                    `${leagueCount} league${leagueCount !== 1 ? 's' : ''}`;
+            } else {
+                authButtons.style.display = 'flex';
+                userMenu.style.display = 'none';
+            }
+        }
+
+        // ============================================
+        // FORM VALIDATION
+        // ============================================
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+
+        function getPasswordStrength(password) {
+            let strength = 0;
+            if (password.length >= 8) strength++;
+            if (password.match(/[a-z]/) && password.match(/[A-Z]/)) strength++;
+            if (password.match(/[0-9]/)) strength++;
+            if (password.match(/[^a-zA-Z0-9]/)) strength++;
+            if (strength <= 1) return 'weak';
+            if (strength <= 2) return 'medium';
+            return 'strong';
+        }
+
+        function showFieldError(groupId, errorId, message) {
+            const group = document.getElementById(groupId);
+            const error = document.getElementById(errorId);
+            group.classList.add('error');
+            group.classList.remove('success');
+            error.textContent = message;
+        }
+
+        function clearFieldError(groupId) {
+            const group = document.getElementById(groupId);
+            group.classList.remove('error');
+        }
+
+        function showFieldSuccess(groupId) {
+            const group = document.getElementById(groupId);
+            group.classList.remove('error');
+            group.classList.add('success');
+        }
+
+        // ============================================
+        // AUTH MODAL MANAGEMENT
+        // ============================================
+        function openModal(type) {
+            currentAuthMode = type;
+            const modal = document.getElementById('authModal');
+            const title = document.getElementById('modalTitle');
+            const subtitle = document.getElementById('modalSubtitle');
+            const submitBtn = document.getElementById('submitBtn');
+            const footer = document.getElementById('modalFooter');
+            const passwordStrength = document.getElementById('passwordStrength');
+
+            // Clear form and errors
+            document.getElementById('authForm').reset();
+            clearFieldError('emailGroup');
+            clearFieldError('passwordGroup');
+
+            if (type === 'login') {
+                title.textContent = 'Welcome Back';
+                subtitle.textContent = 'Log in to access your leagues';
+                submitBtn.textContent = 'Log In';
+                footer.innerHTML = 'Don\'t have an account? <a href="#" onclick="switchModal(\'signup\'); return false;">Sign up</a>';
+                passwordStrength.style.display = 'none';
+            } else {
+                title.textContent = 'Create Account';
+                subtitle.textContent = 'Join thousands of fantasy managers';
+                submitBtn.textContent = 'Create Account';
+                footer.innerHTML = 'Already have an account? <a href="#" onclick="switchModal(\'login\'); return false;">Log in</a>';
+                passwordStrength.style.display = 'block';
+            }
+
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('authModal').classList.remove('active');
+        }
+
+        function switchModal(type) {
+            openModal(type);
+        }
+
+        // ============================================
+        // AUTH FORM SUBMISSION
+        // ============================================
+        async function handleAuth(e) {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const remember = document.getElementById('rememberMe').checked;
+
+            // Validate email
+            if (!validateEmail(email)) {
+                showFieldError('emailGroup', 'emailError', 'Please enter a valid email address');
+                return;
+            }
+            clearFieldError('emailGroup');
+
+            // Validate password
+            if (password.length < 8) {
+                showFieldError('passwordGroup', 'passwordError', 'Password must be at least 8 characters');
+                return;
+            }
+            clearFieldError('passwordGroup');
+
+            const hashedPassword = await hashPassword(password);
+            const users = getUsers();
+
+            if (currentAuthMode === 'signup') {
+                // Check if user exists
+                if (users[email]) {
+                    showFieldError('emailGroup', 'emailError', 'An account with this email already exists');
+                    return;
+                }
+
+                // Create new user
+                users[email] = {
+                    email: email,
+                    password: hashedPassword,
+                    createdAt: Date.now(),
+                    leagues: []
+                };
+                saveUsers(users);
+                setCurrentUser(email, remember);
+                closeModal();
+                updateUIForUser();
+                showToast('Account created successfully! Welcome to GridIron AI.');
+
+            } else {
+                // Login
+                const user = users[email];
+                if (!user) {
+                    showFieldError('emailGroup', 'emailError', 'No account found with this email');
+                    return;
+                }
+
+                if (user.password !== hashedPassword) {
+                    showFieldError('passwordGroup', 'passwordError', 'Incorrect password');
+                    return;
+                }
+
+                setCurrentUser(email, remember);
+                closeModal();
+                updateUIForUser();
+                showToast(`Welcome back, ${email.split('@')[0]}!`);
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('gridironSession');
+            updateUIForUser();
+            showToast('You have been logged out.');
+        }
+
+        // ============================================
+        // JOIN LEAGUE FUNCTIONALITY
+        // ============================================
+        function joinLeague(leagueName, leagueId) {
+            const user = getCurrentUser();
+
+            if (!user) {
+                showToast('Please log in to join a league', 'error');
+                openModal('login');
+                return;
+            }
+
+            const users = getUsers();
+            const userEmail = JSON.parse(localStorage.getItem('gridironSession')).email;
+
+            // Check if already joined
+            if (users[userEmail].leagues && users[userEmail].leagues.some(l => l.id === leagueId)) {
+                showToast('You have already joined this league', 'error');
+                return;
+            }
+
+            // Add league to user
+            if (!users[userEmail].leagues) {
+                users[userEmail].leagues = [];
+            }
+            users[userEmail].leagues.push({
+                id: leagueId,
+                name: leagueName,
+                joinedAt: Date.now()
+            });
+            saveUsers(users);
+            updateUIForUser();
+
+            showToast(`You have joined ${leagueName}!`);
+            closeBrowseLeagues();
+        }
+
+        // ============================================
+        // THEME MANAGEMENT
+        // ============================================
         const themeSelect = document.getElementById('themeSelect');
         const modeToggle = document.getElementById('modeToggle');
         let isLightMode = false;
@@ -2648,30 +3154,20 @@
             modeToggle.textContent = '☀️';
         }
 
-        // Theme change handler
         themeSelect.addEventListener('change', function() {
             const theme = this.value;
-
-            // Remove all theme classes
             document.body.className = '';
-
-            // Add new theme if not default
             if (theme !== 'default') {
                 document.body.classList.add(`theme-${theme}`);
             }
-
-            // Re-apply light mode if active
             if (isLightMode) {
                 document.body.classList.add('light-mode');
             }
-
             localStorage.setItem('gridironTheme', theme);
         });
 
-        // Light/Dark mode toggle
         modeToggle.addEventListener('click', function() {
             isLightMode = !isLightMode;
-
             if (isLightMode) {
                 document.body.classList.add('light-mode');
                 modeToggle.textContent = '☀️';
@@ -2683,55 +3179,24 @@
             }
         });
 
-        // Modal functionality
-        function openModal(type) {
-            const modal = document.getElementById('authModal');
-            const title = document.getElementById('modalTitle');
-            const subtitle = document.getElementById('modalSubtitle');
-            const submitBtn = document.getElementById('submitBtn');
-            const footer = document.getElementById('modalFooter');
-
-            if (type === 'login') {
-                title.textContent = 'Welcome Back';
-                subtitle.textContent = 'Log in to access your leagues';
-                submitBtn.textContent = 'Log In';
-                footer.innerHTML = 'Don\'t have an account? <a href="#" onclick="switchModal(\'signup\'); return false;">Sign up</a>';
-            } else {
-                title.textContent = 'Create Account';
-                subtitle.textContent = 'Start dominating your leagues today';
-                submitBtn.textContent = 'Create Account';
-                footer.innerHTML = 'Already have an account? <a href="#" onclick="switchModal(\'login\'); return false;">Log in</a>';
+        // ============================================
+        // PASSWORD STRENGTH INDICATOR
+        // ============================================
+        document.getElementById('password').addEventListener('input', function() {
+            if (currentAuthMode === 'signup') {
+                const strength = getPasswordStrength(this.value);
+                const bar = document.getElementById('passwordStrengthBar');
+                bar.className = 'password-strength-bar ' + strength;
             }
+        });
 
-            modal.classList.add('active');
-        }
+        // ============================================
+        // EVENT LISTENERS
+        // ============================================
+        document.getElementById('authForm').addEventListener('submit', handleAuth);
 
-        function closeModal() {
-            document.getElementById('authModal').classList.remove('active');
-        }
-
-        function switchModal(type) {
-            openModal(type);
-        }
-
-        // Close modal on overlay click
         document.getElementById('authModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeModal();
-            }
-        });
-
-        // Close modal on Escape key
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeModal();
-            }
-        });
-
-        // Form submission (placeholder)
-        document.getElementById('authForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('Authentication would happen here!');
+            if (e.target === this) closeModal();
         });
 
         // Smooth scroll for nav links
@@ -2748,7 +3213,9 @@
             });
         });
 
-        // Browse Leagues Modal
+        // ============================================
+        // BROWSE LEAGUES MODAL
+        // ============================================
         function openBrowseLeagues() {
             document.getElementById('browseModal').classList.add('active');
             document.body.style.overflow = 'hidden';
@@ -2759,19 +3226,22 @@
             document.body.style.overflow = '';
         }
 
-        // Close browse modal on overlay click
         document.getElementById('browseModal').addEventListener('click', function(e) {
-            if (e.target === this) {
+            if (e.target === this) closeBrowseLeagues();
+        });
+
+        // Close modals on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
                 closeBrowseLeagues();
             }
         });
 
-        // Close browse modal on Escape key
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeBrowseLeagues();
-            }
-        });
+        // ============================================
+        // INITIALIZE
+        // ============================================
+        updateUIForUser();
     </script>
 </body>
 </html>
