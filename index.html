@@ -2847,7 +2847,10 @@
         // ============================================
         // API CONFIGURATION
         // ============================================
-        const API_BASE_URL = 'http://127.0.0.1:8000';
+        // Auto-detect environment: use localhost for local dev, deployed URL for production
+        const API_BASE_URL = window.location.hostname === 'spacekitty7.github.io'
+            ? 'https://gridiron-api.onrender.com'  // Production API (update when deployed)
+            : 'http://127.0.0.1:8000';             // Local development
 
         // Get CSRF token from cookies (for Django)
         function getCookie(name) {
