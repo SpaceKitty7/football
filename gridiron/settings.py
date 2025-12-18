@@ -145,7 +145,14 @@ REST_FRAMEWORK = {
 # CORS settings
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
+    'http://localhost:5500',
     'http://127.0.0.1:3000',
+    'http://127.0.0.1:5500',
     'https://spacekitty7.github.io',
+    'null',  # For file:// protocol during local development
 ]
 CORS_ALLOW_CREDENTIALS = True
+
+# Allow all origins in development (override above in DEBUG mode)
+if DEBUG:
+    CORS_ALLOW_ALL_ORIGINS = True

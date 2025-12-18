@@ -2845,47 +2845,84 @@
 
     <script>
         // ============================================
-        // SECURITY: Simple hash function for passwords
-        // Note: For production, use bcrypt via a backend API
-        // This provides basic security for demo/development
+        // API CONFIGURATION
         // ============================================
-        async function hashPassword(password) {
-            const encoder = new TextEncoder();
-            const data = encoder.encode(password + 'gridironSalt2024!');
-            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-            const hashArray = Array.from(new Uint8Array(hashBuffer));
-            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        const API_BASE_URL = 'http://127.0.0.1:8000';
+
+        // Get CSRF token from cookies (for Django)
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        // API fetch wrapper with credentials and CSRF
+        async function apiFetch(endpoint, options = {}) {
+            const url = `${API_BASE_URL}${endpoint}`;
+            const defaultOptions = {
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken'),
+                },
+            };
+
+            const response = await fetch(url, { ...defaultOptions, ...options });
+
+            if (!response.ok) {
+                const error = await response.json().catch(() => ({ detail: 'Request failed' }));
+                throw new Error(error.detail || error.non_field_errors?.[0] || 'Request failed');
+            }
+
+            return response.json();
         }
 
         // ============================================
-        // USER DATA MANAGEMENT
+        // USER DATA MANAGEMENT (Django API)
         // ============================================
-        function getUsers() {
-            const users = localStorage.getItem('gridironUsers');
-            return users ? JSON.parse(users) : {};
-        }
-
-        function saveUsers(users) {
-            localStorage.setItem('gridironUsers', JSON.stringify(users));
-        }
+        let currentUserData = null;
 
         function getCurrentUser() {
-            const session = localStorage.getItem('gridironSession');
-            if (!session) return null;
-            const { email, expires } = JSON.parse(session);
-            if (Date.now() > expires) {
-                localStorage.removeItem('gridironSession');
-                return null;
-            }
-            const users = getUsers();
-            return users[email] || null;
+            return currentUserData;
         }
 
-        function setCurrentUser(email, remember = false) {
-            const expires = remember
-                ? Date.now() + (30 * 24 * 60 * 60 * 1000) // 30 days
-                : Date.now() + (24 * 60 * 60 * 1000); // 1 day
-            localStorage.setItem('gridironSession', JSON.stringify({ email, expires }));
+        function setCurrentUserData(user) {
+            currentUserData = user;
+            if (user) {
+                localStorage.setItem('gridironUser', JSON.stringify(user));
+            } else {
+                localStorage.removeItem('gridironUser');
+            }
+        }
+
+        // Check if user is logged in on page load
+        async function checkAuthStatus() {
+            // First check localStorage for cached user
+            const cached = localStorage.getItem('gridironUser');
+            if (cached) {
+                currentUserData = JSON.parse(cached);
+                updateUIForUser();
+            }
+
+            // Then verify with server
+            try {
+                const user = await apiFetch('/api/auth/me/');
+                setCurrentUserData(user);
+                updateUIForUser();
+            } catch (e) {
+                // Not logged in or server unavailable
+                setCurrentUserData(null);
+                updateUIForUser();
+            }
         }
 
         // ============================================
@@ -2917,11 +2954,11 @@
             if (user) {
                 authButtons.style.display = 'none';
                 userMenu.style.display = 'flex';
-                document.getElementById('userAvatar').textContent = user.email[0].toUpperCase();
-                document.getElementById('userName').textContent = user.email.split('@')[0];
-                const leagueCount = user.leagues ? user.leagues.length : 0;
-                document.getElementById('userLeagueCount').textContent =
-                    `${leagueCount} league${leagueCount !== 1 ? 's' : ''}`;
+                const displayName = user.username || user.email;
+                document.getElementById('userAvatar').textContent = displayName[0].toUpperCase();
+                document.getElementById('userName').textContent = displayName;
+                // League count will be fetched from API
+                document.getElementById('userLeagueCount').textContent = 'GridIron AI';
             } else {
                 authButtons.style.display = 'flex';
                 userMenu.style.display = 'none';
@@ -3009,14 +3046,13 @@
         }
 
         // ============================================
-        // AUTH FORM SUBMISSION
+        // AUTH FORM SUBMISSION (Django API)
         // ============================================
         async function handleAuth(e) {
             e.preventDefault();
 
             const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value;
-            const remember = document.getElementById('rememberMe').checked;
 
             // Validate email
             if (!validateEmail(email)) {
@@ -3026,65 +3062,72 @@
             clearFieldError('emailGroup');
 
             // Validate password
-            if (password.length < 8) {
-                showFieldError('passwordGroup', 'passwordError', 'Password must be at least 8 characters');
+            if (password.length < 4) {
+                showFieldError('passwordGroup', 'passwordError', 'Password must be at least 4 characters');
                 return;
             }
             clearFieldError('passwordGroup');
 
-            const hashedPassword = await hashPassword(password);
-            const users = getUsers();
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = currentAuthMode === 'signup' ? 'Creating...' : 'Logging in...';
 
-            if (currentAuthMode === 'signup') {
-                // Check if user exists
-                if (users[email]) {
-                    showFieldError('emailGroup', 'emailError', 'An account with this email already exists');
-                    return;
+            try {
+                if (currentAuthMode === 'signup') {
+                    // Register new user via API
+                    const response = await apiFetch('/api/auth/register/', {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            username: email.split('@')[0],
+                            email: email,
+                            password: password,
+                            password_confirm: password
+                        })
+                    });
+
+                    setCurrentUserData(response.user);
+                    closeModal();
+                    updateUIForUser();
+                    showToast('Account created successfully! Welcome to GridIron AI.');
+
+                } else {
+                    // Login via API
+                    const response = await apiFetch('/api/auth/login/', {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            username: email.split('@')[0],
+                            password: password
+                        })
+                    });
+
+                    setCurrentUserData(response.user);
+                    closeModal();
+                    updateUIForUser();
+                    showToast(`Welcome back, ${response.user.username}!`);
                 }
-
-                // Create new user
-                users[email] = {
-                    email: email,
-                    password: hashedPassword,
-                    createdAt: Date.now(),
-                    leagues: []
-                };
-                saveUsers(users);
-                setCurrentUser(email, remember);
-                closeModal();
-                updateUIForUser();
-                showToast('Account created successfully! Welcome to GridIron AI.');
-
-            } else {
-                // Login
-                const user = users[email];
-                if (!user) {
-                    showFieldError('emailGroup', 'emailError', 'No account found with this email');
-                    return;
-                }
-
-                if (user.password !== hashedPassword) {
-                    showFieldError('passwordGroup', 'passwordError', 'Incorrect password');
-                    return;
-                }
-
-                setCurrentUser(email, remember);
-                closeModal();
-                updateUIForUser();
-                showToast(`Welcome back, ${email.split('@')[0]}!`);
+            } catch (error) {
+                showFieldError('passwordGroup', 'passwordError', error.message || 'Authentication failed');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = currentAuthMode === 'signup' ? 'Create Account' : 'Log In';
             }
         }
 
-        function logout() {
-            localStorage.removeItem('gridironSession');
+        async function logout() {
+            try {
+                await apiFetch('/api/auth/logout/', { method: 'POST' });
+            } catch (e) {
+                // Logout anyway even if API fails
+            }
+            setCurrentUserData(null);
             updateUIForUser();
             showToast('You have been logged out.');
         }
 
         // ============================================
-        // JOIN LEAGUE FUNCTIONALITY
+        // JOIN LEAGUE FUNCTIONALITY (Django API)
         // ============================================
-        function joinLeague(leagueName, leagueId) {
+        async function joinLeague(leagueName, leagueId) {
             const user = getCurrentUser();
 
             if (!user) {
@@ -3093,29 +3136,19 @@
                 return;
             }
 
-            const users = getUsers();
-            const userEmail = JSON.parse(localStorage.getItem('gridironSession')).email;
+            try {
+                const response = await apiFetch(`/api/leagues/${leagueId}/join/`, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        team_name: `${user.username}'s Team`
+                    })
+                });
 
-            // Check if already joined
-            if (users[userEmail].leagues && users[userEmail].leagues.some(l => l.id === leagueId)) {
-                showToast('You have already joined this league', 'error');
-                return;
+                showToast(`You have joined ${leagueName}!`);
+                closeBrowseLeagues();
+            } catch (error) {
+                showToast(error.message || 'Failed to join league', 'error');
             }
-
-            // Add league to user
-            if (!users[userEmail].leagues) {
-                users[userEmail].leagues = [];
-            }
-            users[userEmail].leagues.push({
-                id: leagueId,
-                name: leagueName,
-                joinedAt: Date.now()
-            });
-            saveUsers(users);
-            updateUIForUser();
-
-            showToast(`You have joined ${leagueName}!`);
-            closeBrowseLeagues();
         }
 
         // ============================================
@@ -3227,7 +3260,7 @@
         // ============================================
         // INITIALIZE
         // ============================================
-        updateUIForUser();
+        checkAuthStatus();
     </script>
 </body>
 </html>
